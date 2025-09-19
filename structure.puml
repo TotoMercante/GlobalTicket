@@ -1,0 +1,72 @@
+@startuml
+
+package EventModule {
+    class Event {
+        name: String
+        date: Date
+        location: String
+        description: String
+        startSellDate: Date
+        ticketValue: Integer
+    }
+    class EventController {
+        GET /events
+        GET /events/{id}
+        POST /events
+        PATCH /events/{id}
+        DELETE /events/{id}
+    }
+    class EventService {
+        getAllEvents(): List<Event>
+        getEventById(id: String): Event
+        createEvent(event: EventDto): Event
+        updateEvent(id: String, event: Partial<EventDto>): Event
+        deleteEvent(id: String): void
+    }
+    
+    EventController ..> EventService
+    EventController ..> Event
+    EventService ..> Event
+}
+
+package UserModule {
+    class User {
+        email: String
+        password: String
+        phoneNumber: String
+    }
+    class StandardUser extends User {
+        firstName: String
+        lastName: String
+        dni: Integer
+        birthdate: Date
+    }
+    class ManagerUser extends User {
+        name: String
+        cuit: Integer
+    }
+    
+    StandardUser -> Event: boughtEvent
+    ManagerUser -> Event: managedUsers
+    
+    class UserController {
+        GET /users
+        GET /users/{id}
+        POST /users
+        PATCH /users/{id}
+        DELETE /users/{id}
+    }
+    class UserService {
+        getAllUsers(): List<User>
+        getUserById(id: String): User
+        createUser(user: UserDto): User
+        updateUser(id: String, user: Partial<UserDto>): User
+        deleteUser(id: String): void
+    }
+    
+    UserController ..> UserService
+    UserController ..> User
+    UserService ..> User
+}
+
+@enduml
