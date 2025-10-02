@@ -9,6 +9,7 @@ package EventModule {
         startSellDate: Date
         ticketValue: Integer
     }
+
     class EventController {
         GET /events
         GET /events/{id}
@@ -45,10 +46,7 @@ package UserModule {
         name: String
         cuit: Integer
     }
-    
-    StandardUser -> Event: boughtEvent
-    ManagerUser -> Event: managedUsers
-    
+
     class UserController {
         GET /users
         GET /users/{id}
@@ -68,5 +66,9 @@ package UserModule {
     UserController ..> User
     UserService ..> User
 }
+
+StandardUser --> Event: boughtEvent
+ManagerUser --> Event: managedEvents
+Event --> ManagerUser: manager
 
 @enduml
