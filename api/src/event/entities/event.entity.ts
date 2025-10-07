@@ -1,7 +1,9 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Types } from 'mongoose';
+import { HydratedDocument, Types } from 'mongoose';
 import { ApiProperty } from '@nestjs/swagger';
 import { ManagerUser } from '../../user/entities/manager-user.entity';
+
+export type EventDocument = HydratedDocument<Event>;
 
 @Schema()
 export class Event {
@@ -28,6 +30,10 @@ export class Event {
   @ApiProperty({ example: 25_000 })
   @Prop({ required: true })
   ticketPrice: number;
+
+  @ApiProperty()
+  @Prop({ required: true })
+  capacity: number;
 
   @ApiProperty()
   @Prop({ type: Types.ObjectId, ref: ManagerUser.name, required: true })

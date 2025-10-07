@@ -10,9 +10,9 @@ import {
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { CreateStandardUserDto } from './dto/create-standard-user.dto';
-import { CreateManagerUserDto } from './dto/create-manager-user.dto';
-import { EventPurchaseDto } from './dto/event-purchase.dto';
+import { CreateUserDto } from './dto/create-user.dto';
+import { UpgradeUserDto } from './dto/upgrade-user.dto';
+import { EventTicketDto } from './dto/event-ticket.dto';
 
 @Controller('user')
 export class UserController {
@@ -32,14 +32,21 @@ export class UserController {
     return user;
   }
 
-  @Post('standard')
-  async createStandardUser(@Body() userDto: CreateStandardUserDto) {
-    return this.userService.createStandardUser(userDto);
+  @Post()
+  async createUser(@Body() userDto: CreateUserDto) {
+    return this.userService.createUser(userDto);
   }
 
-  @Post('manager')
-  async createManagerUser(@Body() userDto: CreateManagerUserDto) {
-    return this.userService.createManagerUser(userDto);
+  @Post(':id/upgrade')
+  async upgradeUser(
+    @Param('id') userId: string,
+    @Body() userDto: UpgradeUserDto,
+  ) {
+    const user = await this.userService.upgradeUser(userId, userDto);
+    if (!user) {
+      throw new NotFoundException(`User with id ${userId} not found`);
+    }
+    return user;
   }
 
   @Put(':id')
@@ -54,9 +61,9 @@ export class UserController {
   @Post(':id/purchase')
   async addPurchase(
     @Param('id') id: string,
-    @Body() purchaseDto: EventPurchaseDto,
+    @Body() ticketDto: EventTicketDto,
   ) {
-    const user = await this.userService.addPurchase(id, purchaseDto);
+    const user = await this.userService.addPurchase(id, ticketDto);
     if (!user) {
       throw new NotFoundException(`Standard user with id ${id} not found`);
     }

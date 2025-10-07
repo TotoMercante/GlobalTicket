@@ -3,18 +3,18 @@ import { InjectModel } from '@nestjs/mongoose';
 import { User } from './entities/user.entity';
 import { Model } from 'mongoose';
 import { UpdateUserDto } from './dto/update-user.dto';
-import { StandardUser } from './entities/standard-user.entity';
-import { CreateStandardUserDto } from './dto/create-standard-user.dto';
-import { ManagerUser } from './entities/manager-user.entity';
-import { CreateManagerUserDto } from './dto/create-manager-user.dto';
-import { EventPurchaseDto } from './dto/event-purchase.dto';
+import { CreateUserDto } from './dto/create-user.dto';
+import {
+  ManagerUser,
+  ManagerUserDocument,
+} from './entities/manager-user.entity';
+import { UpgradeUserDto } from './dto/upgrade-user.dto';
+import { EventTicketDto } from './dto/event-ticket.dto';
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectModel(User.name) private readonly userModel: Model<User>,
-    @InjectModel(StandardUser.name)
-    private readonly standardUserModel: Model<StandardUser>,
     @InjectModel(ManagerUser.name)
     private readonly managerUserModel: Model<ManagerUser>,
   ) {}
@@ -30,17 +30,30 @@ export class UserService {
     return user ? user.toObject() : null;
   }
 
-  async createStandardUser(user: CreateStandardUserDto): Promise<StandardUser> {
-    const newUser = await this.standardUserModel.create({
+  async createUser(user: CreateUserDto): Promise<User> {
+    const newUser = await this.userModel.create({
       ...user,
-      __t: StandardUser.name,
     });
     return (await newUser.save()).toObject();
   }
 
-  async createManagerUser(user: CreateManagerUserDto): Promise<ManagerUser> {
-    const newUser = await this.managerUserModel.create(user);
-    return (await newUser.save()).toObject();
+  async upgradeUser(
+    userId: string,
+    data: UpgradeUserDto,
+  ): Promise<ManagerUser | null> {
+    const user = await this.userModel
+      .findByIdAndUpdate<ManagerUserDocument>(
+        userId,
+        {
+          $set: {
+            ...data,
+            __t: ManagerUser.name,
+          },
+        },
+        { overwriteDiscriminatorKey: true },
+      )
+      .exec();
+    return user ? user.toObject() : null;
   }
 
   async update(id: string, updateData: UpdateUserDto): Promise<User | null> {
@@ -50,11 +63,8 @@ export class UserService {
     return updatedUser ? updatedUser.toObject() : null;
   }
 
-  async addPurchase(
-    userId: string,
-    data: EventPurchaseDto,
-  ): Promise<StandardUser> {
-    const foundUser = await this.standardUserModel
+  async addPurchase(userId: string, data: EventTicketDto): Promise<User> {
+    const foundUser = await this.userModel
       .findByIdAndUpdate(userId, {
         $push: { boughtEvents: data },
       })

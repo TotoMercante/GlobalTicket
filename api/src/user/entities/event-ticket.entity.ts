@@ -1,13 +1,13 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Event } from 'src/event/entities/event.entity';
-
-import { Types } from 'mongoose';
 import { ApiProperty } from '@nestjs/swagger';
+import { HydratedDocument, Types } from 'mongoose';
+
+export type EventTicketDocument = HydratedDocument<EventTicket>;
 
 @Schema({ _id: false })
-export class EventPurchase {
+export class EventTicket {
   @ApiProperty()
-  @Prop({ type: Types.ObjectId, ref: Event.name, required: true })
+  @Prop({ type: Types.ObjectId, ref: 'Event', required: true })
   eventId: string;
 
   @ApiProperty()
@@ -19,4 +19,4 @@ export class EventPurchase {
   quantity: number;
 }
 
-export const EventPurchaseSchema = SchemaFactory.createForClass(EventPurchase);
+export const EventTicketSchema = SchemaFactory.createForClass(EventTicket);
