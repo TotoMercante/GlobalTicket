@@ -1,9 +1,11 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Types } from 'mongoose';
 
 export class UserBaseDto {
   @ApiProperty()
-  _id: string | Types.ObjectId;
+  _id: string;
+
+  @ApiProperty()
+  _v: number;
 
   @ApiProperty({ example: 'direccion@ejemplo.com' })
   email: string;
@@ -26,9 +28,15 @@ export class UserBaseDto {
   @ApiProperty({ example: new Date(1990, 0, 1).toISOString() })
   birthdate: Date;
 
+  @ApiProperty({ type: String, isArray: true })
+  eventTickets: string[];
+
   @ApiProperty({ example: 'Empresa S.A.' })
   bussinessName: string;
 
   @ApiProperty({ example: 30500000038 })
   cuit: number;
+
+  @ApiProperty({ type: String, isArray: true })
+  managedEvents: string[];
 }

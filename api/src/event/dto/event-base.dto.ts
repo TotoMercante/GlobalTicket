@@ -1,9 +1,11 @@
 import { ApiProperty } from '@nestjs/swagger';
-import type { Types } from 'mongoose';
 
 export class EventBaseDto {
   @ApiProperty()
-  _id: string | Types.ObjectId;
+  _id: string;
+
+  @ApiProperty()
+  _v: number;
 
   @ApiProperty({ example: 'Nombre de evento' })
   name: string;
@@ -27,5 +29,5 @@ export class EventBaseDto {
   capacity: number;
 
   @ApiProperty()
-  managerId: string | Types.ObjectId;
+  managerId: string;
 }
