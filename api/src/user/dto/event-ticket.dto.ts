@@ -1,3 +1,12 @@
-import { EventTicket } from '../entities/event-ticket.entity';
+import { ApiProperty } from '@nestjs/swagger';
 
-export class EventTicketDto extends EventTicket {}
+export class EventTicketDto {
+  @ApiProperty()
+  eventId: string;
+
+  @ApiProperty()
+  date: Date;
+
+  @ApiProperty({ example: 2 })
+  quantity: number;
+}

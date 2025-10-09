@@ -1,3 +1,4 @@
-import { Event } from 'src/event/entities/event.entity';
+import { OmitType } from '@nestjs/swagger';
+import { EventBaseDto } from './event-base.dto';
 
-export class CreateEventDto extends Event {}
+export class CreateEventDto extends OmitType(EventBaseDto, ['_id']) {}

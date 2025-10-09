@@ -1,4 +1,8 @@
 import { OmitType } from '@nestjs/swagger';
-import { User } from '../entities/user.entity';
+import { UserBaseDto } from './user-base.dto';
 
-export class CreateUserDto extends OmitType(User, ['boughtEvents']) {}
+export class CreateUserDto extends OmitType(UserBaseDto, [
+  '_id',
+  'bussinessName',
+  'cuit',
+]) {}

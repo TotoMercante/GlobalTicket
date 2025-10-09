@@ -1,7 +1,7 @@
 import { PickType } from '@nestjs/swagger';
-import { ManagerUser } from '../entities/manager-user.entity';
+import { UserBaseDto } from './user-base.dto';
 
-export class UpgradeUserDto extends PickType(ManagerUser, [
+export class UpgradeUserDto extends PickType(UserBaseDto, [
   'bussinessName',
   'cuit',
 ]) {}
