@@ -7,7 +7,8 @@
     "build": "next build --turbopack",
     "start": "next start",
     "lint": "eslint",
-    "format": "prettier src/ --write"
+    "format": "prettier src/ --write",
+    "generate-api": "openapi-generator-cli generate -g typescript-fetch -i http://localhost:5000/api-json -o src/common/api"
   },
   "dependencies": {
     "bulma": "^1.0.4",
@@ -18,6 +19,7 @@
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
+    "@openapitools/openapi-generator-cli": "^2.24.0",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",
