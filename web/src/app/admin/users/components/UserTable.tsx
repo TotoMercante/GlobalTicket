@@ -49,7 +49,9 @@ export default function UserTable() {
           className="button is-primary level-left"
           onClick={() => setOpenModal({ modal: "new" })}
         >
-          <span className="icon"><i className="fas fa-plus"></i></span>
+          <span className="icon">
+            <i className="fas fa-plus"></i>
+          </span>
           <span>Nuevo usuario</span>
         </button>
         <button className="button icon-text level-right" onClick={reloadUsers}>

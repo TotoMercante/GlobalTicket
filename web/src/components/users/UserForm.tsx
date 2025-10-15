@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import type { CreateUserDto, StandardUserDto, UpdateUserDto } from "@/api";
 import { useState } from "react";
@@ -28,13 +28,13 @@ export default function UserForm(props: UserFormProps) {
           </label>
           <input
             required
-            disabled={props.mode == 'edit'}
+            disabled={props.mode == "edit"}
             type="email"
             name="email"
             id="email"
             className="input"
             placeholder="Email"
-            value={user.email ?? ''}
+            value={user.email ?? ""}
             onChange={(e) => setProps("email", e.target.value)}
           />
         </div>
@@ -49,7 +49,7 @@ export default function UserForm(props: UserFormProps) {
             id="password"
             className="input"
             placeholder="Contraseña"
-            value={user.password ?? ''}
+            value={user.password ?? ""}
             onChange={(e) => setProps("password", e.target.value)}
           />
         </div>
@@ -64,7 +64,7 @@ export default function UserForm(props: UserFormProps) {
             id="first-name"
             className="input"
             placeholder="Nombre"
-            value={user.firstName ?? ''}
+            value={user.firstName ?? ""}
             onChange={(e) => setProps("firstName", e.target.value)}
           />
         </div>
@@ -79,7 +79,7 @@ export default function UserForm(props: UserFormProps) {
             id="last-name"
             className="input"
             placeholder="Apellido"
-            value={user.lastName ?? ''}
+            value={user.lastName ?? ""}
             onChange={(e) => setProps("lastName", e.target.value)}
           />
         </div>
@@ -89,13 +89,13 @@ export default function UserForm(props: UserFormProps) {
           </label>
           <input
             required
-            disabled={props.mode == 'edit'}
+            disabled={props.mode == "edit"}
             type="number"
             name="dni"
             id="dni"
             className="input"
             placeholder="Número de documento"
-            value={user.dni ?? ''}
+            value={user.dni ?? ""}
             onChange={(e) => setProps("dni", e.target.valueAsNumber)}
           />
           <p className="help">Sin puntos ni espacios</p>
@@ -106,7 +106,7 @@ export default function UserForm(props: UserFormProps) {
           </label>
           <input
             required
-            disabled={props.mode == 'edit'}
+            disabled={props.mode == "edit"}
             type="date"
             name="birthdate"
             id="birthdate"
@@ -127,7 +127,7 @@ export default function UserForm(props: UserFormProps) {
             id="phone-number"
             className="input"
             placeholder="Número de teléfono"
-            value={user.phoneNumber ?? ''}
+            value={user.phoneNumber ?? ""}
             onChange={(e) => setProps("phoneNumber", e.target.value)}
           />
         </div>
