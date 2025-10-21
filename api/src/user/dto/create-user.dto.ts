@@ -1,9 +1,10 @@
 import { OmitType } from '@nestjs/swagger';
-import { UserBaseDto } from './user-base.dto';
+import { UserResponseDto } from './user-response.dto';
 
-export class CreateUserDto extends OmitType(UserBaseDto, [
+export class CreateUserDto extends OmitType(UserResponseDto, [
   '_id',
-  '_v',
+  '__v',
+  '__t',
   'eventTickets',
   'bussinessName',
   'cuit',

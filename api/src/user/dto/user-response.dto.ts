@@ -1,11 +1,11 @@
-import { ApiProperty } from '@nestjs/swagger';
+import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 
-export class UserBaseDto {
+export class UserResponseDto {
   @ApiProperty()
   _id: string;
 
   @ApiProperty()
-  _v: number;
+  __v: number;
 
   @ApiProperty({ example: 'direccion@ejemplo.com' })
   email: string;
@@ -31,12 +31,15 @@ export class UserBaseDto {
   @ApiProperty({ type: String, isArray: true })
   eventTickets: string[];
 
-  @ApiProperty({ example: 'Empresa S.A.' })
+  @ApiPropertyOptional()
+  __t: string;
+
+  @ApiPropertyOptional({ example: 'Empresa S.A.' })
   bussinessName: string;
 
-  @ApiProperty({ example: 30500000038 })
+  @ApiPropertyOptional({ example: 30500000038 })
   cuit: number;
 
-  @ApiProperty({ type: String, isArray: true })
+  @ApiPropertyOptional({ type: String, isArray: true })
   managedEvents: string[];
 }

@@ -63,7 +63,7 @@ export class UserService {
     return updatedUser ? updatedUser.toObject() : null;
   }
 
-  async addPurchase(userId: string, data: EventTicketDto): Promise<User> {
+  async addTicket(userId: string, data: EventTicketDto): Promise<User> {
     const foundUser = await this.userModel
       .findByIdAndUpdate(userId, {
         $push: { boughtEvents: data },
