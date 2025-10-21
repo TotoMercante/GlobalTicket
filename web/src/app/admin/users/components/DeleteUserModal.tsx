@@ -1,8 +1,8 @@
-import { getUserApi, StandardUserDto } from "@/api";
+import { getUserApi, UserResponseDto } from "@/api";
 
 type DeleteUserModalProps = {
-  user: StandardUserDto;
-  onConfirm(user: StandardUserDto): void;
+  user: UserResponseDto;
+  onConfirm(user: UserResponseDto): void;
   onClose(): void;
 };
 

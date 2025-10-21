@@ -8,7 +8,7 @@
     "start": "next start",
     "lint": "eslint",
     "format": "prettier src/ --write",
-    "generate-api": "openapi-generator-cli generate -g typescript-fetch -i http://localhost:5000/api-json -o src/common/api"
+    "generate-api": "openapi-generator-cli generate -g typescript-fetch -i http://localhost:5000/api-json -o src/api/generated"
   },
   "dependencies": {
     "@fortawesome/fontawesome-free": "^7.1.0",

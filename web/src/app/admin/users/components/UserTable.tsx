@@ -1,19 +1,19 @@
 "use client";
 
-import { getUserApi, type StandardUserDto, type UpdateUserDto } from "@/api";
-import { use, useEffect, useState } from "react";
+import { getUserApi, type UserResponseDto } from "@/api";
+import { useEffect, useState } from "react";
 import EditUserModal from "./EditUserModal";
 import NewUserModal from "./NewUserModal";
 import DeleteUserModal from "./DeleteUserModal";
 
 type OpenModalOpts =
   | { modal: "new" }
-  | { modal: "edit"; user: StandardUserDto }
-  | { modal: "delete"; user: StandardUserDto }
+  | { modal: "edit"; user: UserResponseDto }
+  | { modal: "delete"; user: UserResponseDto }
   | { modal: "none" };
 
 export default function UserTable() {
-  const [users, setUsers] = useState<StandardUserDto[]>([]);
+  const [users, setUsers] = useState<UserResponseDto[]>([]);
   const [openModal, setOpenModal] = useState<OpenModalOpts>({ modal: "none" });
 
   function reloadUsers() {
@@ -27,17 +27,17 @@ export default function UserTable() {
     setOpenModal({ modal: "none" });
   }
 
-  function addUser(newUser: StandardUserDto) {
+  function addUser(newUser: UserResponseDto) {
     setUsers([...users, newUser]);
     closeModal();
   }
 
-  function updateUser(user: StandardUserDto) {
+  function updateUser(user: UserResponseDto) {
     setUsers(users.map((u) => (u.id == user.id ? user : u)));
     closeModal();
   }
 
-  function removeUser(user: StandardUserDto) {
+  function removeUser(user: UserResponseDto) {
     setUsers(users.filter((u) => u.id !== user.id));
     closeModal();
   }

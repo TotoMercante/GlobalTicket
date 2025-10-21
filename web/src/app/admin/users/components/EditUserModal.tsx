@@ -1,9 +1,9 @@
-import { getUserApi, type StandardUserDto, type UpdateUserDto } from "@/api";
+import { getUserApi, type UserResponseDto, type UpdateUserDto } from "@/api";
 import UserForm from "@/components/users/UserForm";
 
 type EditUserModalProps = {
-  user: StandardUserDto;
-  onSave(user: StandardUserDto): void;
+  user: UserResponseDto;
+  onSave(user: UserResponseDto): void;
   onClose(): void;
 };
 

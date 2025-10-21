@@ -1,16 +1,16 @@
-import { getUserApi, type StandardUserDto, type CreateUserDto } from "@/api";
+import { getUserApi, type UserResponseDto, type CreateUserDto } from "@/api";
 import UserForm from "@/components/users/UserForm";
 
 type NewUserModalProps = {
   active: boolean;
-  onSave(user: StandardUserDto): void;
+  onSave(user: UserResponseDto): void;
   onClose(): void;
 };
 
 export default function NewUserModal(props: NewUserModalProps) {
   function save(user: CreateUserDto) {
     getUserApi()
-      .userControllerCreateUser({ createUserDto: user })
+      .userControllerCreate({ createUserDto: user })
       .then(props.onSave)
       .catch(console.error);
   }
