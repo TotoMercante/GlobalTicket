@@ -5,9 +5,11 @@ import { useEffect, useState } from "react";
 import EditUserModal from "./EditUserModal";
 import NewUserModal from "./NewUserModal";
 import DeleteUserModal from "./DeleteUserModal";
+import ViewUserModal from "./ViewUserModal";
 
 type OpenModalOpts =
   | { modal: "new" }
+  | { modal: "view"; user: UserResponseDto }
   | { modal: "edit"; user: UserResponseDto }
   | { modal: "delete"; user: UserResponseDto }
   | { modal: "none" };
@@ -83,7 +85,10 @@ export default function UserTable() {
             </tr>
           ) : (
             users.map((u) => (
-              <tr key={u.id}>
+              <tr
+                key={u.id}
+                onClick={() => setOpenModal({ modal: "view", user: u })}
+              >
                 <td>{u.email}</td>
                 <td>{u.firstName}</td>
                 <td>{u.lastName}</td>
@@ -93,9 +98,7 @@ export default function UserTable() {
                 <td>
                   <button
                     className="icon has-text-primary"
-                    onClick={() => {
-                      setOpenModal({ modal: "edit", user: u });
-                    }}
+                    onClick={() => setOpenModal({ modal: "edit", user: u })}
                   >
                     <i className="fas fa-pen"></i>
                   </button>
@@ -116,6 +119,14 @@ export default function UserTable() {
         onSave={addUser}
         onClose={closeModal}
       />
+      {openModal.modal == "view" && (
+        <ViewUserModal
+          user={openModal.user}
+          onClose={closeModal}
+          onClickEdit={() => setOpenModal({ ...openModal, modal: "edit" })}
+          onClickDelete={() => setOpenModal({ ...openModal, modal: "delete" })}
+        />
+      )}
       {openModal.modal == "edit" && (
         <EditUserModal
           user={openModal.user}
