@@ -1,3 +1,4 @@
+import { Auth0Provider } from "@auth0/nextjs-auth0";
 import "./globals.css";
 
 export default function RootLayout({
@@ -5,7 +6,9 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en">
-      <body>{children}</body>
+      <body>
+        <Auth0Provider>{children}</Auth0Provider>
+      </body>
     </html>
   );
 }
