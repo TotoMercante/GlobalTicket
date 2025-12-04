@@ -1,6 +1,7 @@
 "use client";
 
-import { useUser, getAccessToken } from "@auth0/nextjs-auth0";
+import { useUser } from "@auth0/nextjs-auth0";
+import Image from "next/image";
 
 export default function Profile() {
   const { user, isLoading } = useUser();
@@ -12,7 +13,12 @@ export default function Profile() {
       ) : !user ? null : (
         <>
           {user.picture && (
-            <img src={user.picture} alt={user.name || "User profile"} />
+            <Image
+              src={user.picture}
+              alt={user.name || "User profile picture"}
+              width={100}
+              height={100}
+            />
           )}
           <h2 className="content is-medium">{user.name}</h2>
           <p className="content">{user.email}</p>

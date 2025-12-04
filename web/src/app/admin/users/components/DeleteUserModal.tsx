@@ -19,8 +19,8 @@ export default function DeleteUserModal(props: DeleteUserModalProps) {
       <div className="modal-content box">
         <p className="title is-3">Eliminar usuario</p>
         <p>
-          Desea eliminar el usuario '{props.user.email}'? Esta acción no se
-          puede deshacer.
+          Desea eliminar el usuario &lsquo;{props.user.email}&rsquo;? Esta
+          acción no se puede deshacer.
         </p>
         <button className="button is-danger" onClick={deleteUser}>
           Eliminar

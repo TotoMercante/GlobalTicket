@@ -11,10 +11,10 @@
     "generate-api": "openapi-generator-cli generate -g typescript-fetch -i http://localhost:5000/api-json -o src/api/generated"
   },
   "dependencies": {
-    "@auth0/nextjs-auth0": "^4.11.1",
+    "@auth0/nextjs-auth0": "^4.13.1",
     "@fortawesome/fontawesome-free": "^7.1.0",
     "bulma": "^1.0.4",
-    "next": "15.5.4",
+    "next": "~16.0.7",
     "react": "19.1.0",
     "react-dom": "19.1.0",
     "sass": "^1.93.2"
@@ -22,11 +22,11 @@
   "devDependencies": {
     "@eslint/eslintrc": "^3",
     "@openapitools/openapi-generator-cli": "^2.24.0",
-    "@types/node": "^20",
+    "@types/node": "^24",
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^9",
-    "eslint-config-next": "15.5.4",
+    "eslint-config-next": "~16.0.7",
     "eslint-config-prettier": "^10.1.8",
     "prettier": "^3.6.2",
     "typescript": "^5"
