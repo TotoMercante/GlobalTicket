@@ -3,7 +3,7 @@ import { UserService } from './user.service';
 import { UserController } from './user.controller';
 import { MongooseModule } from '@nestjs/mongoose';
 import { User, UserSchema } from './entities/user.entity';
-import { ManagerUser, ManagerUserSchema } from './entities/manager-user.entity';
+import { ManagerData, ManagerDataSchema } from './entities/manager-data.entity';
 
 @Module({
   imports: [
@@ -11,7 +11,10 @@ import { ManagerUser, ManagerUserSchema } from './entities/manager-user.entity';
       {
         name: User.name,
         schema: UserSchema,
-        discriminators: [{ name: ManagerUser.name, schema: ManagerUserSchema }],
+      },
+      {
+        name: ManagerData.name,
+        schema: ManagerDataSchema,
       },
     ]),
   ],

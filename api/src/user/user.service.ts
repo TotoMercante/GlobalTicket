@@ -1,53 +1,61 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { User } from './entities/user.entity';
 import { Model } from 'mongoose';
-import { UpdateUserDto } from './dto/update-user.dto';
-import { CreateUserDto } from './dto/create-user.dto';
-import {
-  ManagerUser,
-  ManagerUserDocument,
-} from './entities/manager-user.entity';
-import { UpgradeUserDto } from './dto/upgrade-user.dto';
-import { EventTicketDto } from './dto/event-ticket.dto';
+import { CreateUserDto } from './dto/request/create-user.dto';
+import { UpdateUserDto } from './dto/request/update-user.dto';
+import { ManagerData } from './entities/manager-data.entity';
+import { User } from './entities/user.entity';
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectModel(User.name) private readonly userModel: Model<User>,
-    @InjectModel(ManagerUser.name)
-    private readonly managerUserModel: Model<ManagerUser>,
+    @InjectModel(ManagerData.name)
+    private readonly managerDataModel: Model<ManagerData>,
   ) {}
 
   async getAll(): Promise<User[]> {
-    const users = await this.userModel.find().exec();
-    return users.map((user) => user.toObject());
+    const users = await this.userModel
+      .find({}, { _id: 1, firstName: 1, lastName: 1, email: 1, phoneNumber: 1 })
+      .exec();
+    return users.map((u) => u.toObject());
   }
 
-  async getById(id: string): Promise<User | null> {
+  async getById(id: string): Promise<User | (User & ManagerData) | null> {
     const user = await this.userModel.findById(id).exec();
-    console.log(user);
-    return user ? user.toObject() : null;
+    if (!user) return null;
+    if (user.type !== 'manager') return user.toObject();
+    const managerData = await this.managerDataModel
+      .findOne({ userId: id }, { userId: 0 })
+      .exec();
+    return { ...user.toObject(), ...managerData?.toObject() };
   }
 
   async createUser(user: CreateUserDto): Promise<User> {
-    const newUser = await this.userModel.create({
-      ...user,
-    });
+    const userWithSameEmail = await this.userModel
+      .findOne({
+        email: user.email,
+      })
+      .exec();
+    if (userWithSameEmail) {
+      throw new Error('duplicate email');
+    }
+    const newUser = await this.userModel.create(user);
     return (await newUser.save()).toObject();
   }
 
+  /* 
   async upgradeUser(
     userId: string,
-    data: UpgradeUserDto,
-  ): Promise<ManagerUser | null> {
+    data: RequestUserUpgradeDto,
+  ): Promise<ManagerData | null> {
     const user = await this.userModel
-      .findByIdAndUpdate<ManagerUserDocument>(
+      .findByIdAndUpdate<ManagerDataDocument>(
         userId,
         {
           $set: {
             ...data,
-            __t: ManagerUser.name,
+            type: 'manager',
           },
         },
         { overwriteDiscriminatorKey: true },
@@ -55,24 +63,13 @@ export class UserService {
       .exec();
     return user ? user.toObject() : null;
   }
+ */
 
   async update(id: string, updateData: UpdateUserDto): Promise<User | null> {
     const updatedUser = await this.userModel
       .findByIdAndUpdate(id, updateData, { new: true })
       .exec();
     return updatedUser ? updatedUser.toObject() : null;
-  }
-
-  async addTicket(userId: string, data: EventTicketDto): Promise<User> {
-    const foundUser = await this.userModel
-      .findByIdAndUpdate(userId, {
-        $push: { boughtEvents: data },
-      })
-      .exec();
-    if (!foundUser) {
-      throw new Error(`User with id ${userId} not found`);
-    }
-    return foundUser.toObject();
   }
 
   async delete(id: string): Promise<boolean> {
