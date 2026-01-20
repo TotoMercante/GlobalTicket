@@ -1,14 +1,15 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, HttpException } from '@nestjs/common';
 import { PassportStrategy } from '@nestjs/passport';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { passportJwtSecret } from 'jwks-rsa';
 import * as dotenv from 'dotenv';
+import { UserService } from 'src/user/user.service';
 
 dotenv.config();
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
-  constructor() {
+  constructor(private readonly userService: UserService) {
     super({
       secretOrKeyProvider: passportJwtSecret({
         cache: true,
@@ -18,13 +19,20 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
       }),
 
       jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-      audience: process.env.AUTH0_AUDIENCE,
-      issuer: `${process.env.AUTH0_ISSUER_URL}`,
       algorithms: ['RS256'],
+      passReqToCallback: true,
     });
   }
 
-  validate(payload: unknown): unknown {
-    return payload;
+  async validate(req: Request, payload: Record<string, unknown>) {
+    const token = ExtractJwt.fromAuthHeaderAsBearerToken()(req);
+    const res = await fetch(`${process.env.AUTH0_ISSUER_URL}userinfo`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    const data = (await res.json()) as Record<string, unknown>;
+    if (res.ok) {
+      const user = await this.userService.getByEmail(data['email'] as string);
+      return [user, payload];
+    } else throw new HttpException(data, res.status);
   }
 }

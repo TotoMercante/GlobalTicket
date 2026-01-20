@@ -20,6 +20,6 @@ import { ManagerData, ManagerDataSchema } from './entities/manager-data.entity';
   ],
   controllers: [UserController],
   providers: [UserService],
-  exports: [MongooseModule],
+  exports: [MongooseModule, UserService],
 })
 export class UserModule {}

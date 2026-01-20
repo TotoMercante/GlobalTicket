@@ -31,17 +31,29 @@ export class UserService {
     return { ...user.toObject(), ...managerData?.toObject() };
   }
 
-  async createUser(user: CreateUserDto): Promise<User> {
+  async getByEmail(email: string): Promise<User | (User & ManagerData) | null> {
+    const user = await this.userModel.findOne({ email }).exec();
+    if (!user) return null;
+    if (user.type !== 'manager') return user.toObject();
+    const managerData = await this.managerDataModel
+      .findOne({ userId: user.id }, { userId: 0 })
+      .exec();
+    return { ...user.toObject(), ...managerData?.toObject() };
+  }
+
+  async createUser(
+    user: CreateUserDto,
+  ): Promise<[User, null] | [null, { duplicateEmail: true }]> {
     const userWithSameEmail = await this.userModel
       .findOne({
         email: user.email,
       })
       .exec();
     if (userWithSameEmail) {
-      throw new Error('duplicate email');
+      return [null, { duplicateEmail: true }];
     }
     const newUser = await this.userModel.create(user);
-    return (await newUser.save()).toObject();
+    return [(await newUser.save()).toObject(), null];
   }
 
   /* 

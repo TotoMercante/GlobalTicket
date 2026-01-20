@@ -55,15 +55,16 @@ export class UserController {
   @ApiBadRequestResponse({ type: BadRequestException })
   async create(@Body() userDto: CreateUserDto) {
     try {
-      return await this.userService.createUser(userDto);
-    } catch (error) {
-      if (error instanceof Error && error.message === 'duplicate email') {
+      const [user, error] = await this.userService.createUser(userDto);
+      if (error) {
         throw new BadRequestException(`Email ${userDto.email} is already used`);
       }
-      if (!(error instanceof mongoose.Error)) throw error;
+      return user;
+    } catch (error) {
       if (error instanceof mongoose.Error.ValidationError) {
-        throw new BadRequestException(error.message);
+        throw new BadRequestException(error);
       }
+      throw error;
     }
   }
 

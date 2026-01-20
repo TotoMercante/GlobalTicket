@@ -3,6 +3,7 @@ import { EventModule } from './event/event.module';
 import { MongooseModule } from '@nestjs/mongoose';
 import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
+import { ProfileModule } from './profile/profile.module';
 
 @Module({
   imports: [
@@ -10,6 +11,7 @@ import { AuthModule } from './auth/auth.module';
     EventModule,
     UserModule,
     AuthModule,
+    ProfileModule,
   ],
   controllers: [],
   providers: [],
