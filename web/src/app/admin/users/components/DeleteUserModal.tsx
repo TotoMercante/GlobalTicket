@@ -1,16 +1,19 @@
-import { getUserApi, UserResponseDto } from "@/api";
+import { getUserApi, UserDto } from "@/api";
+import { use } from "react";
 
 type DeleteUserModalProps = {
-  user: UserResponseDto;
-  onConfirm(user: UserResponseDto): void;
+  user: Promise<UserDto>;
+  onConfirm(user: UserDto): void;
   onClose(): void;
 };
 
 export default function DeleteUserModal(props: DeleteUserModalProps) {
+  const user = use(props.user);
+
   function deleteUser() {
     getUserApi()
-      .userControllerDelete({ id: props.user.id })
-      .then(() => props.onConfirm(props.user));
+      .userControllerDelete({ id: user.id })
+      .then(() => props.onConfirm(user));
   }
 
   return (
@@ -19,8 +22,8 @@ export default function DeleteUserModal(props: DeleteUserModalProps) {
       <div className="modal-content box">
         <p className="title is-3">Eliminar usuario</p>
         <p>
-          Desea eliminar el usuario &lsquo;{props.user.email}&rsquo;? Esta
-          acción no se puede deshacer.
+          Desea eliminar el usuario &lsquo;{user.email}&rsquo;? Esta acción no
+          se puede deshacer.
         </p>
         <button className="button is-danger" onClick={deleteUser}>
           Eliminar

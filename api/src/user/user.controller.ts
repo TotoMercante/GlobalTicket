@@ -85,7 +85,7 @@ export class UserController {
  */
 
   @Put(':id')
-  @ApiOkResponse({ type: UserDto })
+  @ApiOkResponse({ type: UserShortDto })
   @ApiNotFoundResponse()
   async update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
     const user = await this.userService.update(id, updateUserDto);

@@ -1,16 +1,19 @@
-import { getUserApi, type UserResponseDto, type UpdateUserDto } from "@/api";
+import { getUserApi, UpdateUserDto, UserDto, UserShortDto } from "@/api";
 import UserForm from "@/components/users/UserForm";
+import { use } from "react";
 
 type EditUserModalProps = {
-  user: UserResponseDto;
-  onSave(user: UserResponseDto): void;
+  user: Promise<UserDto>;
+  onSave(user: UserShortDto): void;
   onClose(): void;
 };
 
 export default function EditUserModal(props: EditUserModalProps) {
-  function updateUser(user: UpdateUserDto) {
+  const user = use(props.user);
+
+  function updateUser(newUser: UpdateUserDto) {
     getUserApi()
-      .userControllerUpdate({ id: props.user.id, updateUserDto: user })
+      .userControllerUpdate({ id: user.id, updateUserDto: newUser })
       .then(props.onSave);
   }
 
@@ -19,7 +22,7 @@ export default function EditUserModal(props: EditUserModalProps) {
       <div className="modal-background" onClick={props.onClose} />
       <div className="modal-content box">
         <p className="title is-3">Editar usuario</p>
-        <UserForm mode="edit" user={props.user} onSave={updateUser} />
+        <UserForm mode="edit" user={user} onSave={updateUser} />
       </div>
       <div className="modal-close" onClick={props.onClose} />
     </div>

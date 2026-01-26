@@ -21,7 +21,7 @@ export class BaseUserDto {
   blocked: boolean;
 
   @ApiPropertyOptional()
-  phoneNumber: string;
+  phoneNumber?: string;
 
   @ApiProperty()
   dni: number;

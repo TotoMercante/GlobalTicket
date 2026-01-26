@@ -1,19 +1,22 @@
-import { UserResponseDto } from "@/api";
+import { UserDto } from "@/api";
+import { use } from "react";
 
 type ViewUserModalProps = {
-  user: UserResponseDto;
+  user: Promise<UserDto>;
   onClose(): void;
   onClickEdit(): void;
   onClickDelete(): void;
 };
 
 export default function ViewUserModal(props: ViewUserModalProps) {
+  const user = use(props.user);
+
   return (
     <div className="modal is-active">
       <div className="modal-background" onClick={props.onClose} />
       <div className="modal-content box">
         <p className="title is-3">
-          {props.user.firstName} {props.user.lastName}
+          {user.firstName} {user.lastName}
         </p>
         <div className="buttons">
           <button
@@ -30,21 +33,21 @@ export default function ViewUserModal(props: ViewUserModalProps) {
           </button>
         </div>
         <p>
-          <strong>Email:</strong> {props.user.email}
+          <strong>Email:</strong> {user.email}
         </p>
         <p>
-          <strong>Nro de documento:</strong> {props.user.dni}
+          <strong>Nro de documento:</strong> {user.dni}
         </p>
         <p>
-          <strong>Teléfono:</strong> {props.user.phoneNumber}
+          <strong>Teléfono:</strong> {user.phoneNumber}
         </p>
-        {props.user.t == "ManagerUser" && (
+        {user.type == "manager" && (
           <>
             <p>
-              <strong>Empresa:</strong> {props.user.bussinessName}
+              <strong>Empresa:</strong> {user.businessName}
             </p>
             <p>
-              <strong>CUIT:</strong> {props.user.cuit}
+              <strong>CUIT:</strong> {user.cuit}
             </p>
           </>
         )}

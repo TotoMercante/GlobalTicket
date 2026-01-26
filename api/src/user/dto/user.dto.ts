@@ -1,8 +1,8 @@
-import { IntersectionType, OmitType, PartialType } from '@nestjs/swagger';
-import { ManagerUserDto } from './manager-user.dto';
+import { IntersectionType, PartialType } from '@nestjs/swagger';
 import { BaseUserDto } from './base-user.dto';
+import { ManagerDataDto } from './manager-user.dto';
 
 export class UserDto extends IntersectionType(
-  PartialType(OmitType(ManagerUserDto, ['type'])),
   BaseUserDto,
+  PartialType(ManagerDataDto),
 ) {}

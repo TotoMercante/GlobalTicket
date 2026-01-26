@@ -79,7 +79,16 @@ export class UserService {
 
   async update(id: string, updateData: UpdateUserDto): Promise<User | null> {
     const updatedUser = await this.userModel
-      .findByIdAndUpdate(id, updateData, { new: true })
+      .findByIdAndUpdate(id, updateData, {
+        new: true,
+        projection: {
+          _id: 1,
+          firstName: 1,
+          lastName: 1,
+          email: 1,
+          phoneNumber: 1,
+        },
+      })
       .exec();
     return updatedUser ? updatedUser.toObject() : null;
   }

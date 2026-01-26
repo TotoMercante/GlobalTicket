@@ -1,18 +1,18 @@
 "use client";
 
-import type { CreateUserDto, StandardUserDto, UpdateUserDto } from "@/api";
+import { CreateUserDto, UserDto, UpdateUserDto, UserDtoTypeEnum } from "@/api";
 import { useState } from "react";
 
 type UserFormProps =
   | { mode: "new"; onSave(user: CreateUserDto): void }
-  | { mode: "edit"; user: StandardUserDto; onSave(user: UpdateUserDto): void };
+  | { mode: "edit"; user: UserDto; onSave(user: UpdateUserDto): void };
 
 export default function UserForm(props: UserFormProps) {
-  const [user, setUser] = useState(
-    props.mode == "edit" ? props.user : ({} as CreateUserDto),
-  );
+  const initialState =
+    props.mode == "edit" ? props.user : ({} as CreateUserDto);
+  const [user, setUser] = useState(initialState);
 
-  function setProps<K extends keyof CreateUserDto, V extends CreateUserDto[K]>(
+  function setProps<K extends keyof UserDto, V extends UserDto[K]>(
     name: K,
     value: V,
   ) {
@@ -117,20 +117,74 @@ export default function UserForm(props: UserFormProps) {
           />
         </div>
         <div className="field">
+          <label htmlFor="type" className="label">
+            Tipo
+          </label>
+          <select
+            required
+            name="type"
+            id="type"
+            className="input"
+            value={user.type ?? UserDtoTypeEnum.Standard}
+            onChange={(e) =>
+              setProps("type", e.target.value as UserDtoTypeEnum)
+            }
+          >
+            {Object.entries(UserDtoTypeEnum).map(([key, value]) => (
+              <option key={key} value={value}>
+                {key}
+              </option>
+            ))}
+          </select>
+        </div>
+        <div className="field">
           <label htmlFor="phone-number" className="label">
             Número de teléfono
           </label>
           <input
-            required
             type="tel"
             name="phone-number"
             id="phone-number"
             className="input"
             placeholder="Número de teléfono"
-            value={user.phoneNumber ?? ""}
+            value={user.phoneNumber}
             onChange={(e) => setProps("phoneNumber", e.target.value)}
           />
         </div>
+        {user.type == "manager" && (
+          <>
+            <div className="field">
+              <label htmlFor="business-name" className="label">
+                Nombre de empresa
+              </label>
+              <input
+                required
+                type="text"
+                name="business-name"
+                id="business-name"
+                className="input"
+                placeholder="Nombre de empresa"
+                value={user.businessName ?? ""}
+                onChange={(e) => setProps("businessName", e.target.value)}
+              />
+            </div>
+            <div className="field">
+              <label htmlFor="cuit" className="label">
+                CUIT
+              </label>
+              <input
+                required
+                type="number"
+                name="cuit"
+                id="cuit"
+                className="input"
+                placeholder="CUIT"
+                value={user.cuit ?? ""}
+                onChange={(e) => setProps("cuit", e.target.valueAsNumber)}
+              />
+            </div>
+          </>
+        )}
       </section>
       <div className="field is-grouped">
         <button type="submit" className="button is-primary">
@@ -139,7 +193,7 @@ export default function UserForm(props: UserFormProps) {
         <button
           type="reset"
           className="button"
-          onClick={() => setUser({} as CreateUserDto)}
+          onClick={() => setUser(initialState)}
         >
           Reiniciar
         </button>

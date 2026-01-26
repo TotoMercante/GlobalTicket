@@ -1,6 +1,6 @@
 "use client";
 
-import { getUserApi, type UserResponseDto } from "@/api";
+import { getUserApi, UserDto, type UserShortDto } from "@/api";
 import { useEffect, useState } from "react";
 import EditUserModal from "./EditUserModal";
 import NewUserModal from "./NewUserModal";
@@ -9,13 +9,13 @@ import ViewUserModal from "./ViewUserModal";
 
 type OpenModalOpts =
   | { modal: "new" }
-  | { modal: "view"; user: UserResponseDto }
-  | { modal: "edit"; user: UserResponseDto }
-  | { modal: "delete"; user: UserResponseDto }
+  | { modal: "view"; user: Promise<UserDto> }
+  | { modal: "edit"; user: Promise<UserDto> }
+  | { modal: "delete"; user: Promise<UserDto> }
   | { modal: "none" };
 
 export default function UserTable() {
-  const [users, setUsers] = useState<UserResponseDto[]>([]);
+  const [users, setUsers] = useState<UserShortDto[]>([]);
   const [openModal, setOpenModal] = useState<OpenModalOpts>({ modal: "none" });
 
   function reloadUsers() {
@@ -29,17 +29,21 @@ export default function UserTable() {
     setOpenModal({ modal: "none" });
   }
 
-  function addUser(newUser: UserResponseDto) {
+  function fetchUser(userId: string) {
+    return getUserApi().userControllerGetById({ id: userId });
+  }
+
+  function addUser(newUser: UserShortDto) {
     setUsers([...users, newUser]);
     closeModal();
   }
 
-  function updateUser(user: UserResponseDto) {
+  function updateUser(user: UserShortDto) {
     setUsers(users.map((u) => (u.id == user.id ? user : u)));
     closeModal();
   }
 
-  function removeUser(user: UserResponseDto) {
+  function removeUser(user: UserShortDto) {
     setUsers(users.filter((u) => u.id !== user.id));
     closeModal();
   }
@@ -70,16 +74,14 @@ export default function UserTable() {
             <th>Email</th>
             <th>Nombre</th>
             <th>Apellido</th>
-            <th>Nro de documento</th>
             <th>Teléfono</th>
-            <th>Fecha de nacimiento</th>
             <th>Acciones</th>
           </tr>
         </thead>
         <tbody>
           {users.length == 0 ? (
             <tr>
-              <td colSpan={7}>
+              <td colSpan={5}>
                 No hay ningún usuario para mostrar. Prueba crear uno.
               </td>
             </tr>
@@ -87,24 +89,30 @@ export default function UserTable() {
             users.map((u) => (
               <tr
                 key={u.id}
-                onClick={() => setOpenModal({ modal: "view", user: u })}
+                onClick={() =>
+                  setOpenModal({ modal: "view", user: fetchUser(u.id) })
+                }
               >
                 <td>{u.email}</td>
                 <td>{u.firstName}</td>
                 <td>{u.lastName}</td>
-                <td>{u.dni}</td>
-                <td>{u.phoneNumber}</td>
-                <td>{u.birthdate.toLocaleDateString()}</td>
+                <td>{u.phoneNumber || "Sin teléfono"}</td>
                 <td>
                   <button
                     className="icon has-text-primary"
-                    onClick={() => setOpenModal({ modal: "edit", user: u })}
+                    onClick={(e) => {
+                      setOpenModal({ modal: "edit", user: fetchUser(u.id) });
+                      e.stopPropagation();
+                    }}
                   >
                     <i className="fas fa-pen"></i>
                   </button>
                   <button
                     className="icon has-text-danger"
-                    onClick={() => setOpenModal({ modal: "delete", user: u })}
+                    onClick={(e) => {
+                      setOpenModal({ modal: "delete", user: fetchUser(u.id) });
+                      e.stopPropagation();
+                    }}
                   >
                     <i className="fas fa-trash"></i>
                   </button>

@@ -1,9 +1,9 @@
-import { getUserApi, type UserResponseDto, type CreateUserDto } from "@/api";
+import { getUserApi, UserShortDto, CreateUserDto } from "@/api";
 import UserForm from "@/components/users/UserForm";
 
 type NewUserModalProps = {
   active: boolean;
-  onSave(user: UserResponseDto): void;
+  onSave(user: UserShortDto): void;
   onClose(): void;
 };
 
