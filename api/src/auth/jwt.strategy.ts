@@ -32,6 +32,9 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     const data = (await res.json()) as Record<string, unknown>;
     if (res.ok) {
       const user = await this.userService.getByEmail(data['email'] as string);
+      if (!user) {
+        throw new HttpException({ registered: false }, 401);
+      }
       return [user, payload];
     } else throw new HttpException(data, res.status);
   }

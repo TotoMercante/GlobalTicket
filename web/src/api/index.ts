@@ -1,17 +1,17 @@
 export * from "./generated";
 
-import { getAccessToken } from "@auth0/nextjs-auth0";
+import { auth0 } from "@/auth0";
 import {
-  EventApi,
-  UserApi,
   Configuration,
+  EventApi,
   ProfileApi,
   RegisterApi,
+  UserApi,
 } from "./generated";
 
 const config = new Configuration({
   basePath: "http://localhost:5000",
-  accessToken: () => getAccessToken(),
+  accessToken: () => auth0.getAccessToken().then((res) => res.token),
 });
 
 const apis: {
