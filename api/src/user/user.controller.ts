@@ -68,22 +68,6 @@ export class UserController {
     }
   }
 
-  /* 
-  @Post(':id/upgrade-request')
-  @ApiCreatedResponse()
-  @ApiNotFoundResponse()
-  async upgrade(
-    @Param('id') userId: string,
-    @Body() userDto: RequestUserUpgradeDto,
-  ) {
-    const user = await this.userService.upgradeUser(userId, userDto);
-    if (!user) {
-      throw new NotFoundException(`User with id ${userId} not found`);
-    }
-    return user;
-  }
- */
-
   @Put(':id')
   @ApiOkResponse({ type: UserShortDto })
   @ApiNotFoundResponse()

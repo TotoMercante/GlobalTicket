@@ -56,27 +56,6 @@ export class UserService {
     return [(await newUser.save()).toObject(), null];
   }
 
-  /* 
-  async upgradeUser(
-    userId: string,
-    data: RequestUserUpgradeDto,
-  ): Promise<ManagerData | null> {
-    const user = await this.userModel
-      .findByIdAndUpdate<ManagerDataDocument>(
-        userId,
-        {
-          $set: {
-            ...data,
-            type: 'manager',
-          },
-        },
-        { overwriteDiscriminatorKey: true },
-      )
-      .exec();
-    return user ? user.toObject() : null;
-  }
- */
-
   async update(id: string, updateData: UpdateUserDto): Promise<User | null> {
     const updatedUser = await this.userModel
       .findByIdAndUpdate(id, updateData, {

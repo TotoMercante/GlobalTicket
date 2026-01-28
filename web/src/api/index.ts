@@ -4,6 +4,7 @@ import { auth0 } from "@/auth0";
 import {
   Configuration,
   EventApi,
+  ManagerRequestApi,
   ProfileApi,
   RegisterApi,
   UserApi,
@@ -19,6 +20,7 @@ const apis: {
   user?: UserApi;
   profile?: ProfileApi;
   register?: RegisterApi;
+  managerRequest?: ManagerRequestApi;
 } = {};
 
 export function getEventApi() {
@@ -35,4 +37,10 @@ export function getProfileApi() {
 
 export function getRegisterApi() {
   return apis.register || (apis.register = new RegisterApi(config));
+}
+
+export function getManagerRequestApi() {
+  return (
+    apis.managerRequest || (apis.managerRequest = new ManagerRequestApi(config))
+  );
 }

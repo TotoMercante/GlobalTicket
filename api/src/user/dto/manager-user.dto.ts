@@ -1,5 +1,5 @@
 import { ApiProperty, IntersectionType, OmitType } from '@nestjs/swagger';
-import { EventBaseDto } from 'src/event/dto/event-base.dto';
+import { EventShortDto } from 'src/event/dto/response/event-short.dto';
 import { BaseUserDto } from './base-user.dto';
 
 export class ManagerDataDto {
@@ -10,7 +10,7 @@ export class ManagerDataDto {
   cuit: number;
 
   @ApiProperty()
-  events: EventBaseDto[];
+  events: EventShortDto[];
 }
 
 export class ManagerUserDto extends IntersectionType(
