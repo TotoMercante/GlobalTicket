@@ -1,11 +1,14 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { EventTicket, EventTicketSchema } from './event-ticket.entity';
 import { HydratedDocument } from 'mongoose';
+import { EventTicket, EventTicketSchema } from './event-ticket.entity';
+import { ManagerData, ManagerDataSchema } from './manager-data.entity';
 
 export type UserDocument = HydratedDocument<User>;
 
 @Schema()
 export class User {
+  _id: string;
+
   @Prop({ required: true, unique: true })
   email: string;
 
@@ -23,7 +26,7 @@ export class User {
   blocked: boolean = false;
 
   @Prop({ required: false })
-  phoneNumber: string;
+  phoneNumber?: string;
 
   @Prop({ required: true })
   dni: number;
@@ -39,6 +42,9 @@ export class User {
 
   @Prop({ type: [EventTicketSchema], default: [] })
   eventTickets: EventTicket[];
+
+  @Prop({ type: ManagerDataSchema, required: false })
+  managerData?: ManagerData;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

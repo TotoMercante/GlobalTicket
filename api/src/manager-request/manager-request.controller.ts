@@ -8,16 +8,15 @@ import {
   Post,
   Put,
 } from '@nestjs/common';
-import { ManagerRequestService } from './manager-request.service';
-import { CreateManagerRequestDto } from './dto/create-manager-request.dto';
 import {
   ApiBadRequestResponse,
   ApiCreatedResponse,
   ApiNotFoundResponse,
   ApiOkResponse,
 } from '@nestjs/swagger';
+import { CreateManagerRequestDto } from './dto/create-manager-request.dto';
 import { ManagerRequestDto } from './dto/manager-request.dto';
-import { ManagerDataDto } from 'src/user/dto/manager-user.dto';
+import { ManagerRequestService } from './manager-request.service';
 
 @Controller('manager-request')
 export class ManagerRequestController {
@@ -60,16 +59,14 @@ export class ManagerRequestController {
 
   @Put(':id/accept')
   @ApiOkResponse({
-    type: ManagerDataDto,
     description: 'Manager request accepted successfully',
   })
   @ApiNotFoundResponse({ description: 'Manager request not found' })
   async accept(@Param('id') id: string) {
-    const managerData = await this.managerRequestService.accept(id);
-    if (!managerData) {
+    const found = await this.managerRequestService.accept(id);
+    if (!found) {
       throw new NotFoundException(`Manager request with id ${id} not found`);
     }
-    return managerData;
   }
 
   @Put(':id/reject')

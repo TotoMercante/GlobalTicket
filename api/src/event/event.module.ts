@@ -12,5 +12,6 @@ import { UserModule } from '../user/user.module';
   ],
   controllers: [EventController],
   providers: [EventService],
+  exports: [EventService],
 })
 export class EventModule {}

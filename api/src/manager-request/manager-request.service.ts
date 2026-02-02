@@ -66,26 +66,23 @@ export class ManagerRequestService {
     return [request.toObject(), null];
   }
 
-  async accept(id: string): Promise<ManagerData | null> {
+  async accept(id: string): Promise<boolean> {
     const session = await this.connection.startSession();
     return session
       .withTransaction(async () => {
         const requestDoc = await this.managerRequestModel
           .findByIdAndDelete(id)
           .exec();
-        if (!requestDoc) return null;
+        if (!requestDoc) return false;
         const { user, businessName, cuit } = requestDoc.toObject();
-        const managerData = await new this.managerDataModel({
-          userId: user,
-          businessName,
-          cuit,
-        }).save();
-        await this.userModel
-          .findByIdAndUpdate(user, {
-            type: 'manager',
-          })
-          .exec();
-        return managerData.toObject();
+        const manager = await this.userModel.findByIdAndUpdate(user, {
+          type: 'manager',
+          managerData: {
+            businessName,
+            cuit,
+          },
+        });
+        return Boolean(manager?.managerData);
       })
       .finally(() => void session.endSession());
   }

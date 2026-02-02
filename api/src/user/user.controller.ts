@@ -27,8 +27,8 @@ import { UserDto } from './dto/user.dto';
 import { UserService } from './user.service';
 
 // TODO Implementar permisos
-@ApiBearerAuth()
-@UseGuards(AuthGuard('jwt'))
+// @ApiBearerAuth()
+// @UseGuards(AuthGuard('jwt'))
 @Controller('users')
 export class UserController {
   constructor(private readonly userService: UserService) {}

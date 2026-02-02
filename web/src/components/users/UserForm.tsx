@@ -151,40 +151,6 @@ export default function UserForm(props: UserFormProps) {
             onChange={(e) => setProps("phoneNumber", e.target.value)}
           />
         </div>
-        {user.type == "manager" && (
-          <>
-            <div className="field">
-              <label htmlFor="business-name" className="label">
-                Nombre de empresa
-              </label>
-              <input
-                required
-                type="text"
-                name="business-name"
-                id="business-name"
-                className="input"
-                placeholder="Nombre de empresa"
-                value={user.businessName ?? ""}
-                onChange={(e) => setProps("businessName", e.target.value)}
-              />
-            </div>
-            <div className="field">
-              <label htmlFor="cuit" className="label">
-                CUIT
-              </label>
-              <input
-                required
-                type="number"
-                name="cuit"
-                id="cuit"
-                className="input"
-                placeholder="CUIT"
-                value={user.cuit ?? ""}
-                onChange={(e) => setProps("cuit", e.target.valueAsNumber)}
-              />
-            </div>
-          </>
-        )}
       </section>
       <div className="field is-grouped">
         <button type="submit" className="button is-primary">

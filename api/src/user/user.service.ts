@@ -21,24 +21,19 @@ export class UserService {
     return users.map((u) => u.toObject());
   }
 
-  async getById(id: string): Promise<User | (User & ManagerData) | null> {
+  async getById(id: string): Promise<User | null> {
     const user = await this.userModel.findById(id).exec();
     if (!user) return null;
-    if (user.type !== 'manager') return user.toObject();
-    const managerData = await this.managerDataModel
-      .findOne({ userId: id }, { userId: 0 })
-      .exec();
-    return { ...user.toObject(), ...managerData?.toObject() };
+    await user.populate('managerData');
+    return user.toObject();
   }
 
-  async getByEmail(email: string): Promise<User | (User & ManagerData) | null> {
+  async getByEmail(email: string): Promise<User | null> {
     const user = await this.userModel.findOne({ email }).exec();
     if (!user) return null;
     if (user.type !== 'manager') return user.toObject();
-    const managerData = await this.managerDataModel
-      .findOne({ userId: user.id }, { userId: 0 })
-      .exec();
-    return { ...user.toObject(), ...managerData?.toObject() };
+    await user.populate('managerData');
+    return user.toObject();
   }
 
   async createUser(
@@ -52,8 +47,8 @@ export class UserService {
     if (userWithSameEmail) {
       return [null, { duplicateEmail: true }];
     }
-    const newUser = await this.userModel.create(user);
-    return [(await newUser.save()).toObject(), null];
+    const newUser = await new this.userModel(user).save();
+    return [newUser.toObject(), null];
   }
 
   async update(id: string, updateData: UpdateUserDto): Promise<User | null> {

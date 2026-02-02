@@ -1,34 +1,36 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { HydratedDocument, Types } from 'mongoose';
-import { ManagerUser } from '../../user/entities/manager-user.entity';
+import { EventDate, EventDateSchema } from './event-date.entity';
+import { User } from 'src/user/entities/user.entity';
 
-export type EventDocument = HydratedDocument<Event>;
+export type EventDocument = HydratedDocument<Event, EventDocumentOverride>;
+
+export type EventDocumentOverride = {
+  dates: Types.DocumentArray<EventDate>;
+};
 
 @Schema()
 export class Event {
   @Prop({ required: true })
   name: string;
 
-  @Prop({ type: [Date], required: true })
-  date: Date[];
+  @Prop({ required: true })
+  description: string;
 
   @Prop({ required: true })
   location: string;
 
   @Prop({ required: true })
-  description: string;
-
-  @Prop({ required: true })
-  startSellDate: Date;
+  capacity: number;
 
   @Prop({ required: true })
   ticketPrice: number;
 
-  @Prop({ required: true })
-  capacity: number;
+  @Prop([EventDateSchema])
+  dates: EventDate[];
 
-  @Prop({ type: Types.ObjectId, ref: ManagerUser.name, required: true })
-  managerId: string;
+  @Prop({ type: Types.ObjectId, ref: 'User', required: true })
+  manager: User;
 }
 
 export const EventSchema = SchemaFactory.createForClass(Event);

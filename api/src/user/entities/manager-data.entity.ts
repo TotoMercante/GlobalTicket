@@ -6,9 +6,6 @@ export type ManagerDataDocument = HydratedDocument<ManagerData>;
 
 @Schema()
 export class ManagerData {
-  @Prop({ required: true, unique: true })
-  userId: string;
-
   @Prop({ required: true })
   businessName: string;
 

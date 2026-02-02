@@ -6,5 +6,5 @@ export class CreateUserDto extends OmitType(UserDto, [
   '_v',
   'blocked',
   'eventTickets',
-  'events',
+  'managerData',
 ]) {}
