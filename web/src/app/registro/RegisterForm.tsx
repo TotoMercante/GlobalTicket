@@ -2,13 +2,11 @@
 
 import { getRegisterApi, RegisterProfileDto } from "@/api";
 import { useUser } from "@auth0/nextjs-auth0";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
 
 export default function RegisterForm() {
   const { user, isLoading } = useUser();
   const [data, setData] = useState({} as RegisterProfileDto);
-  const router = useRouter();
 
   function setProps<K extends keyof RegisterProfileDto>(
     name: K,
@@ -21,7 +19,7 @@ export default function RegisterForm() {
     await getRegisterApi().registerControllerRegisterProfile({
       registerProfileDto: { ...data, email: user!.email!, password: "pass" },
     });
-    router.push("/");
+    window.location.replace("/");
   }
 
   return (
