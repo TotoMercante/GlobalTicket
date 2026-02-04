@@ -1,6 +1,8 @@
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
-import type { EventTicketDto } from './event-ticket.dto';
+import { ApiProperty, ApiPropertyOptional, OmitType } from '@nestjs/swagger';
+import { EventTicketDto } from 'src/event-ticket/dto/event-ticket.dto';
 import { ManagerDataDto } from './manager-data.dto';
+
+class EventTicketWithoutUser extends OmitType(EventTicketDto, ['user']) {}
 
 export class UserDto {
   @ApiProperty()
@@ -36,8 +38,10 @@ export class UserDto {
   @ApiProperty()
   birthdate: Date;
 
-  @ApiProperty()
-  eventTickets: EventTicketDto[];
+  @ApiProperty({
+    type: [EventTicketWithoutUser],
+  })
+  eventTickets: EventTicketWithoutUser[];
 
   @ApiPropertyOptional()
   managerData?: ManagerDataDto;

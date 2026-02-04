@@ -4,6 +4,7 @@ import { auth0 } from "@/auth0";
 import {
   Configuration,
   EventApi,
+  EventTicketApi,
   ManagerRequestApi,
   ProfileApi,
   RegisterApi,
@@ -13,6 +14,16 @@ import {
 const config = new Configuration({
   basePath: "http://localhost:5000",
   accessToken: () => auth0.getAccessToken().then((res) => res.token),
+  middleware: [
+    {
+      async onError(ctx) {
+        console.dir({ response: ctx.response, error: ctx.error });
+      },
+      async post(ctx) {
+        console.dir({ ...ctx.response, url: ctx.url, ...ctx.init });
+      },
+    },
+  ],
 });
 
 const apis: {
@@ -21,6 +32,7 @@ const apis: {
   profile?: ProfileApi;
   register?: RegisterApi;
   managerRequest?: ManagerRequestApi;
+  eventTicket?: EventTicketApi;
 } = {};
 
 export function getEventApi() {
@@ -43,4 +55,8 @@ export function getManagerRequestApi() {
   return (
     apis.managerRequest || (apis.managerRequest = new ManagerRequestApi(config))
   );
+}
+
+export function getEventTicketApi() {
+  return apis.eventTicket || (apis.eventTicket = new EventTicketApi(config));
 }

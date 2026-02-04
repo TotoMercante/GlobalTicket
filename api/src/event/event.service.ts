@@ -53,7 +53,7 @@ export class EventService {
         _id: 1,
         name: 1,
         location: 1,
-        dates: 1,
+        capacity: 1,
       })
       .sort({ 'dates.0.datetime': 1 });
     const { page = 1, ['per-page']: perPage = 20 } = query;
@@ -65,7 +65,10 @@ export class EventService {
 
   async getByManager(managerId: string): Promise<Event[]> {
     const events = await this.eventModel
-      .find({ manager: managerId }, { _id: 1, name: 1, location: 1, dates: 1 })
+      .find(
+        { manager: managerId },
+        { _id: 1, name: 1, location: 1, capacity: 1 },
+      )
       .sort({ 'dates.0.datetime': 1 })
       .exec();
     return events.map((e) => e.toObject());

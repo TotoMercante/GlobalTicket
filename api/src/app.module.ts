@@ -5,6 +5,7 @@ import { UserModule } from './user/user.module';
 import { AuthModule } from './auth/auth.module';
 import { ProfileModule } from './profile/profile.module';
 import { ManagerRequestModule } from './manager-request/manager-request.module';
+import { EventTicketModule } from './event-ticket/event-ticket.module';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { ManagerRequestModule } from './manager-request/manager-request.module';
     AuthModule,
     ProfileModule,
     ManagerRequestModule,
+    EventTicketModule,
   ],
   controllers: [],
   providers: [],

@@ -12,6 +12,6 @@ import { UserModule } from '../user/user.module';
   ],
   controllers: [EventController],
   providers: [EventService],
-  exports: [EventService],
+  exports: [MongooseModule, EventService],
 })
 export class EventModule {}

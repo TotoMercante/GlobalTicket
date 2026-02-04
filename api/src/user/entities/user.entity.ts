@@ -1,6 +1,5 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { HydratedDocument } from 'mongoose';
-import { EventTicket, EventTicketSchema } from './event-ticket.entity';
+import { HydratedDocument, Types } from 'mongoose';
 import { ManagerData, ManagerDataSchema } from './manager-data.entity';
 
 export type UserDocument = HydratedDocument<User>;
@@ -40,8 +39,8 @@ export class User {
   @Prop({ required: true })
   birthdate: Date;
 
-  @Prop({ type: [EventTicketSchema], default: [] })
-  eventTickets: EventTicket[];
+  @Prop({ type: [{ type: Types.ObjectId, ref: 'EventTicket' }], default: [] })
+  eventTickets: string[];
 
   @Prop({ type: ManagerDataSchema, required: false })
   managerData?: ManagerData;

@@ -3,16 +3,24 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { CreateUserDto } from './dto/request/create-user.dto';
 import { UpdateUserDto } from './dto/request/update-user.dto';
-import { ManagerData } from './entities/manager-data.entity';
 import { User } from './entities/user.entity';
 
 @Injectable()
 export class UserService {
   constructor(
     @InjectModel(User.name) private readonly userModel: Model<User>,
-    @InjectModel(ManagerData.name)
-    private readonly managerDataModel: Model<ManagerData>,
   ) {}
+
+  private readonly managerDataPopulate = { path: 'managerData' };
+
+  private readonly eventTicketPopulate = {
+    path: 'eventTickets',
+    select: '_id event date usable',
+    populate: {
+      path: 'event',
+      select: '_id name location capacity',
+    },
+  };
 
   async getAll(): Promise<User[]> {
     const users = await this.userModel
@@ -22,17 +30,22 @@ export class UserService {
   }
 
   async getById(id: string): Promise<User | null> {
-    const user = await this.userModel.findById(id).exec();
+    const user = await this.userModel
+      .findById(id)
+      .populate([this.managerDataPopulate, this.eventTicketPopulate])
+      .exec();
     if (!user) return null;
-    await user.populate('managerData');
-    return user.toObject();
+    const userObject = user.toObject();
+    return userObject;
   }
 
   async getByEmail(email: string): Promise<User | null> {
-    const user = await this.userModel.findOne({ email }).exec();
+    const user = await this.userModel
+      .findOne({ email })
+      .populate([this.managerDataPopulate, this.eventTicketPopulate])
+      .exec();
     if (!user) return null;
     if (user.type !== 'manager') return user.toObject();
-    await user.populate('managerData');
     return user.toObject();
   }
 

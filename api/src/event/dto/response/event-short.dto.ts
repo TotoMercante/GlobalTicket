@@ -5,5 +5,5 @@ export class EventShortDto extends PickType(EventDto, [
   '_id',
   'name',
   'location',
-  'dates',
+  'capacity',
 ]) {}
