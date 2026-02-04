@@ -9,8 +9,6 @@ export default auth0.withPageAuthRequired(async function PerfilPage() {
     ...(await getProfileApi().profileControllerGetProfile()),
   };
 
-  console.dir(user.eventTickets);
-
   return (
     <div className="container is-max-desktop">
       <div className="block">
@@ -20,26 +18,33 @@ export default auth0.withPageAuthRequired(async function PerfilPage() {
             <figure className="image block is-96x96">
               <Image src={user.picture ?? ""} alt="Foto de perfil" fill />
             </figure>
-            <p>
-              <strong>Email:</strong> {user.email}
-            </p>
-            <p>
-              <strong>Nombre:</strong> {user.firstName}
-            </p>
-            <p>
-              <strong>Apellido:</strong> {user.lastName}
-            </p>
-            <p>
-              <strong>Fecha de nacimiento:</strong>{" "}
-              {user.birthdate.toLocaleDateString()}
-            </p>
-            <p>
-              <strong>DNI:</strong> {user.dni}
-            </p>
-            <p>
-              <strong>Nro de teléfono:</strong>{" "}
-              {user.phoneNumber || "Sin teléfono"}
-            </p>
+            <div className="block">
+              <p>
+                <strong>Email:</strong> {user.email}
+              </p>
+              <p>
+                <strong>Nombre:</strong> {user.firstName}
+              </p>
+              <p>
+                <strong>Apellido:</strong> {user.lastName}
+              </p>
+              <p>
+                <strong>Fecha de nacimiento:</strong>{" "}
+                {user.birthdate.toLocaleDateString()}
+              </p>
+              <p>
+                <strong>DNI:</strong> {user.dni}
+              </p>
+              <p>
+                <strong>Nro de teléfono:</strong>{" "}
+                {user.phoneNumber || "Sin teléfono"}
+              </p>
+            </div>
+            <div className="block">
+              <Link href="/perfil/editar" className="button is-primary">
+                Editar perfil
+              </Link>
+            </div>
           </div>
           <div className="column">
             <p className="title is-3">Mis entradas</p>

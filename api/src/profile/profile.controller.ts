@@ -48,10 +48,9 @@ export class ProfileController {
   }
 
   @Put()
-  @ApiOkResponse({ type: UserDto })
+  @ApiOkResponse()
   async updateProfile(@User() user: UserDto, @Body() data: UpdateProfileDto) {
-    const updatedUser = await this.userService.update(user._id, data);
-    return updatedUser!;
+    await this.userService.update(user._id, data);
   }
 
   @Delete()

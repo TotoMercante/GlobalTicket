@@ -1,29 +1,43 @@
 "use client";
 
-import { getRegisterApi, RegisterProfileDto } from "@/api";
-import { useUser } from "@auth0/nextjs-auth0";
+import type { UpdateProfileDto, UserDto } from "@/api";
 import { useState } from "react";
 
-export default function RegisterForm() {
-  const { user, isLoading } = useUser();
-  const [data, setData] = useState({} as RegisterProfileDto);
+interface UpdateProfileFormProps {
+  profile: UserDto;
+  onSave(data: UpdateProfileDto): Promise<void>;
+}
 
-  function setProps<K extends keyof RegisterProfileDto>(
-    name: K,
-    value: RegisterProfileDto[K],
-  ) {
-    setData({ ...data, [name]: value });
+export default function UpdateProfileForm(props: UpdateProfileFormProps) {
+  const [data, setData] = useState(props.profile);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(false);
+
+  function setProps<K extends keyof UserDto>(key: K, value: UserDto[K]) {
+    setData({ ...data, [key]: value });
   }
 
-  async function registerProfile() {
-    await getRegisterApi().registerControllerRegisterProfile({
-      registerProfileDto: { ...data, email: user!.email!, password: "pass" },
-    });
-    window.location.replace("/");
+  async function saveChanges() {
+    setLoading(true);
+    setError(false);
+    try {
+      await props.onSave(data);
+    } catch (err) {
+      console.dir(err);
+      setError(true);
+    } finally {
+      setLoading(false);
+    }
   }
 
   return (
-    <form action={registerProfile} className="fixed-grid">
+    <form
+      onSubmit={(e) => {
+        e.preventDefault();
+        saveChanges();
+      }}
+      className="fixed-grid"
+    >
       <section className="grid has-2-cols">
         <div className="field">
           <label htmlFor="email" className="label">
@@ -35,9 +49,9 @@ export default function RegisterForm() {
             type="email"
             name="email"
             id="email"
-            className={"input is-static" + (isLoading ? " is-loading" : null)}
+            className="input is-static"
             placeholder="Email"
-            value={user?.email ?? ""}
+            value={data.email}
           />
         </div>
         <div className="field">
@@ -116,14 +130,19 @@ export default function RegisterForm() {
           />
         </div>
       </section>
+      {error && (
+        <div className="block">
+          <div className="notification is-danger">Ha ocurrido un error</div>
+        </div>
+      )}
       <div className="field is-grouped">
-        <button type="submit" className="button is-primary">
+        <button type="submit" className="button is-primary" disabled={loading}>
           Guardar
         </button>
         <button
           type="reset"
           className="button"
-          onClick={() => setData({} as RegisterProfileDto)}
+          onClick={() => setData(props.profile)}
         >
           Reiniciar
         </button>

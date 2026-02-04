@@ -7,17 +7,11 @@ export default auth0.withPageAuthRequired(async function RegistroPage() {
   await getProfileApi()
     .profileControllerGetProfile()
     .catch((err) => {
-      if (err instanceof ResponseError) {
-      } else {
-        console.error(err);
-        throw err;
-      }
+      if (err instanceof ResponseError) return;
+      else throw err;
     })
     .then((user) => {
-      if (user) {
-        console.log(user);
-        redirect("/");
-      }
+      if (user) redirect("/");
     });
 
   return (
