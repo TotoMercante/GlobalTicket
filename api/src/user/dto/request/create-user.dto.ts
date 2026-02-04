@@ -4,7 +4,6 @@ import { UserDto } from '../user.dto';
 export class CreateUserDto extends OmitType(UserDto, [
   '_id',
   '_v',
-  'blocked',
   'eventTickets',
   'managerData',
 ]) {}

@@ -14,14 +14,8 @@ export class UserDto {
   @ApiProperty()
   email: string;
 
-  @ApiProperty()
-  password: string;
-
   @ApiProperty({ enum: ['standard', 'manager', 'staff', 'admin'] })
   type: 'standard' | 'manager' | 'staff' | 'admin';
-
-  @ApiProperty()
-  blocked: boolean;
 
   @ApiPropertyOptional()
   phoneNumber?: string;

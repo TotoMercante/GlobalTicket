@@ -11,18 +11,12 @@ export class User {
   @Prop({ required: true, unique: true })
   email: string;
 
-  @Prop({ required: true })
-  password: string;
-
   @Prop({
     required: true,
     enum: ['standard', 'manager', 'staff', 'admin'],
     default: 'standard',
   })
   type: 'standard' | 'manager' | 'staff' | 'admin' = 'standard';
-
-  @Prop({ required: true, default: false })
-  blocked: boolean = false;
 
   @Prop({ required: false })
   phoneNumber?: string;

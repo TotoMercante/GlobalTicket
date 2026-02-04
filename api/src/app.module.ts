@@ -9,7 +9,7 @@ import { EventTicketModule } from './event-ticket/event-ticket.module';
 
 @Module({
   imports: [
-    MongooseModule.forRoot('mongodb://127.0.0.1:27017/globalticket'),
+    MongooseModule.forRoot(`${process.env.MONGO_URI}`),
     EventModule,
     UserModule,
     AuthModule,
