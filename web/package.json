@@ -14,6 +14,7 @@
     "@auth0/nextjs-auth0": "^4.13.1",
     "@fortawesome/fontawesome-free": "^7.1.0",
     "@mercadopago/sdk-react": "^1.0.7",
+    "@yudiel/react-qr-scanner": "^2.5.1",
     "bulma": "^1.0.4",
     "mercadopago": "^2.12.0",
     "next": "~16.0.7",

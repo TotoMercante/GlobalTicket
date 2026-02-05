@@ -24,8 +24,9 @@ import { EventService } from 'src/event/event.service';
 import { UserService } from 'src/user/user.service';
 import { BuyTicketDto } from './dto/buy-ticket.dto';
 import { EventTicketDto } from './dto/event-ticket.dto';
-import { EventTicketService } from './event-ticket.service';
 import { TransferTicketDto } from './dto/transfer-ticket.dto';
+import { EventTicketService } from './event-ticket.service';
+import { UserDto } from 'src/user/dto/user.dto';
 
 @Controller('event-ticket')
 @UseGuards(AuthGuard('jwt'))
@@ -42,11 +43,14 @@ export class EventTicketController {
   @ApiOkResponse({ type: EventTicketDto })
   @ApiNotFoundResponse()
   @ApiForbiddenResponse()
-  async getById(@User('_id') userId: string, @Param('id') ticketId: string) {
+  async getById(@User() user: UserDto, @Param('id') ticketId: string) {
     const ticket = await this.eventTicketService.getById(ticketId);
     if (!ticket)
       throw new NotFoundException(`Event ticket with id ${ticketId} not found`);
-    if (String(ticket.user._id) !== String(userId))
+    // Only staff and owner can get the ticket
+    const canGetTicket =
+      user.type == 'staff' || String(user._id) == String(ticket.user._id);
+    if (!canGetTicket)
       throw new ForbiddenException(`You are not the owner of this ticket`);
     return ticket;
   }

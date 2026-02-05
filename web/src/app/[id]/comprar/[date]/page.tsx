@@ -1,4 +1,4 @@
-import { getEventApi } from "@/api";
+import { getEventApi, getProfileApi } from "@/api";
 import { auth0 } from "@/auth0";
 import BackButton from "@/components/BackButton";
 import { redirect } from "next/navigation";
@@ -17,7 +17,9 @@ export default auth0.withPageAuthRequired(async function ComprarPage(props) {
   const eventDate = event.dates.find((ed) => ed.datetime.toISOString() == date);
   if (!eventDate) redirect(`${id}`);
 
-  const { email } = await auth0.getSession().then((sess) => sess!.user);
+  const { email, type } = await getProfileApi().profileControllerGetProfile();
+
+  if (type == "staff") redirect("/");
 
   return (
     <div className="container is-max-desktop">
