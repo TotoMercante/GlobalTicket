@@ -14,16 +14,16 @@ import {
 const config = new Configuration({
   basePath: "http://localhost:5000",
   accessToken: () => auth0.getAccessToken().then((res) => res.token),
-  middleware: [
-    {
-      async onError(ctx) {
-        console.dir({ response: ctx.response, error: ctx.error });
-      },
-      async post(ctx) {
-        console.dir({ ...ctx.response, url: ctx.url, ...ctx.init });
-      },
-    },
-  ],
+  // middleware: [
+  //   {
+  //     async onError(ctx) {
+  //       console.dir({ response: ctx.response, error: ctx.error });
+  //     },
+  //     async post(ctx) {
+  //       console.dir({ ...ctx.response, url: ctx.url, ...ctx.init });
+  //     },
+  //   },
+  // ],
 });
 
 const apis: {

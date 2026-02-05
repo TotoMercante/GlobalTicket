@@ -1,4 +1,4 @@
-import { getEventApi, getEventTicketApi } from "@/api";
+import { getEventApi } from "@/api";
 import { auth0 } from "@/auth0";
 import BackButton from "@/components/BackButton";
 import { redirect } from "next/navigation";
@@ -17,14 +17,7 @@ export default auth0.withPageAuthRequired(async function ComprarPage(props) {
   const eventDate = event.dates.find((ed) => ed.datetime.toISOString() == date);
   if (!eventDate) redirect(`${id}`);
 
-  async function buyTickets() {
-    "use server";
-
-    const ticket = await getEventTicketApi().eventTicketControllerBuyTicket({
-      buyTicketDto: { eventId: id, date: new Date(date) },
-    });
-    redirect(`/entradas/${ticket.id}`);
-  }
+  const { email } = await auth0.getSession().then((sess) => sess!.user);
 
   return (
     <div className="container is-max-desktop">
@@ -64,7 +57,12 @@ export default auth0.withPageAuthRequired(async function ComprarPage(props) {
             <strong>Precio:</strong> ${event.ticketPrice}
           </p>
 
-          <BuyButton onBuy={buyTickets} />
+          <BuyButton
+            price={event.ticketPrice}
+            event={event}
+            date={new Date(date)}
+            email={email!}
+          />
         </div>
       </div>
     </div>
