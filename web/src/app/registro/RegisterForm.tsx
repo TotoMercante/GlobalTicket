@@ -17,7 +17,7 @@ export default function RegisterForm() {
 
   async function registerProfile() {
     await getRegisterApi().registerControllerRegisterProfile({
-      registerProfileDto: { ...data, email: user!.email!, password: "pass" },
+      registerProfileDto: { ...data, email: user!.email! },
     });
     window.location.replace("/");
   }

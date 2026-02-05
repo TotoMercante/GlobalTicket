@@ -13,6 +13,6 @@ export class UserShortDto {
   @ApiProperty()
   email: string;
 
-  @ApiPropertyOptional()
-  phoneNumber?: string | undefined;
+  @ApiPropertyOptional({ type: String })
+  phoneNumber?: string;
 }

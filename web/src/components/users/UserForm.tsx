@@ -39,21 +39,6 @@ export default function UserForm(props: UserFormProps) {
           />
         </div>
         <div className="field">
-          <label htmlFor="password" className="label">
-            Contraseña
-          </label>
-          <input
-            required
-            type="password"
-            name="password"
-            id="password"
-            className="input"
-            placeholder="Contraseña"
-            value={user.password ?? ""}
-            onChange={(e) => setProps("password", e.target.value)}
-          />
-        </div>
-        <div className="field">
           <label htmlFor="first-name" className="label">
             Nombre
           </label>

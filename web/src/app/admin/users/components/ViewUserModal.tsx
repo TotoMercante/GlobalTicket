@@ -41,16 +41,6 @@ export default function ViewUserModal(props: ViewUserModalProps) {
         <p>
           <strong>Teléfono:</strong> {user.phoneNumber}
         </p>
-        {user.type == "manager" && (
-          <>
-            <p>
-              <strong>Empresa:</strong> {user.businessName}
-            </p>
-            <p>
-              <strong>CUIT:</strong> {user.cuit}
-            </p>
-          </>
-        )}
       </div>
       <div className="modal-close" onClick={props.onClose} />
     </div>

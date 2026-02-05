@@ -1,36 +1,49 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# GlobalTicket - Aplicación Web
 
-## Getting Started
+La aplicación Web de GlobalTicket permite acceder a todas las funcionalidades de la aplicación mediante una interfaz gráfica unificada. Todos los tipos de usuarios pueden acceder a sus funciones a través de la aplicación Web.
 
-First, run the development server:
+## Estructura de páginas
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+La aplicación cuenta con las siguientes rutas
+
+```
+/                              # Página de inicio
+/<id-evento>                   # Detalles de evento
+/<id-evento>/comprar/<fecha>   # Página de compra
+/<id-evento>/editar            # Edición de evento
+/mis-eventos                   # Gestión de eventos
+
+/perfil                        # Página de perfil de usuario
+/perfil/editar                 # Edición de perfil
+/solicitud-manager             # Formulario de solicitud de permisos de Manager
+
+/entradas/<id-entrada>         # Detalles de entrada
+/staff                         # Validación de entradas
+
+/admin/users                   # Gestión de usuarios
+/admin/solicitudes-manager     # Gestión de solicitudes de permisos de Manager
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Búsqueda y gestión de eventos
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- **`/` (página de inicio):** Muestra los eventos publicados. Permite una búsqueda simple basada en texto y por rango de fechas.
+- **`/<id-evento>`:** Muestra la información completa del evento seleccionado. También muestra las fechas disponibles y permite navegar a la página de compra.
+- **`/<id-evento>/comprar/<fecha>`:** Permite la compra de una entrada mediante Mercado Pago.
+- **`/<id-evento>/editar`:** Permite modificar la información del evento.
+- **`/mis-eventos`:** Muestra los eventos publicados.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Gestión del perfil
 
-## Learn More
+- **`/perfil`:** Muestra la información completa del usuario y las entradas compradas.
+- **`/perfil/editar`:** Permite modificar información del perfil de usuario.
+- **`/solcitud-manager`:** Muestra un formulario para obtener los permisos de Manager.
 
-To learn more about Next.js, take a look at the following resources:
+### Gestión de entradas
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+- **`/entradas/<id-entrada>`:** Muestra los detalles de la entrada y el código QR para validarla. Permite transferir la entrada a otro usuario.
+- **`/staff`:** Permite escanear el código QR de una entrada para ver detalles de la misma.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+### Portal Administrativo
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- **`/admin/users`:** Muestra los usuarios de la aplicación. Permite crear, modificar y eliminar usuarios.
+- **`/admin/solicitudes-manager`:** Muestra las solicitudes pendientes, y permite aceptar o rechazar cada una.
