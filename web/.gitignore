@@ -3,9 +3,6 @@
 # VSCode
 .vscode
 
-# OpenAPI-Generator
-src/api/generated
-
 # dependencies
 /node_modules
 /.pnp

@@ -36,14 +36,24 @@ Solo se permite la instalación directa, es decir:
 
 Ambos proyectos se deben ejecutar manualmente en modo desarrollo.
 
-Desde el directorio de cada proyecto, ejecutar
+1. Iniciar el servidor backend (`/api`)
 
 ```bash
-# ./api
 npm run start
+```
 
-# ./web
+2. Iniciar la aplicación Web (`/web`)
+
+```bash
 npm run dev
+```
+
+3. Navegar a http://localhost:3000
+
+Opcionalmente, se puede inicializar la base de datos con el [**script seed**](api/scripts/seed.mjs). Esto permite ejecutar la aplicación con un conjunto de prueba inicial (require instalar MongoDB en la máquina local).
+
+```bash
+mongosh --file ./api/scripts/seed.mjs URL_CONEXION
 ```
 
 ## Herramientas utilizadas

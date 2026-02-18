@@ -24,6 +24,11 @@ La aplicación cuenta con las siguientes rutas
 /admin/solicitudes-manager     # Gestión de solicitudes de permisos de Manager
 ```
 
+En todas las páginas, se muestra una barra superior con:
+
+- El nombre de la aplicación.
+- Un menú para ver la información de sesión del usuario. Este menú incluye opciones para iniciar o cerrar sesión, ver el perfil del usuario, y ver los eventos propios publicados.
+
 ### Búsqueda y gestión de eventos
 
 - **`/` (página de inicio):** Muestra los eventos publicados. Permite una búsqueda simple basada en texto y por rango de fechas.
